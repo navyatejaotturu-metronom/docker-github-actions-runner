@@ -18,6 +18,7 @@ if [[ -n "${ACCESS_TOKEN}" ]]; then
     _ACCOUNT="$(echo "${_PATH}" | cut -d/ -f1)"
     _REPO="$(echo "${_PATH}" | cut -d/ -f2)"
 
+    echo "${URI}/repos/${_ACCOUNT}/${_REPO}/actions/runners/registration-token"
     RUNNER_TOKEN="$(curl -XPOST -fsSL \
     -H "${AUTH_HEADER}" \
     -H "${API_HEADER}" \
@@ -26,4 +27,6 @@ if [[ -n "${ACCESS_TOKEN}" ]]; then
 fi
 
 ./config.sh --url "${REPO_URL}" --token "${RUNNER_TOKEN}" --name "${_RUNNER_NAME}" --work "${_RUNNER_WORKDIR}"
-./run.sh
+./run.sh --once
+
+./config.sh remove --token "${RUNNER_TOKEN}"
