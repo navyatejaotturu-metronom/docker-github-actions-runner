@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: action-runnerb
+  name: action-runner
   namespace: default
 spec:
   ttlSecondsAfterFinished: 100
@@ -20,7 +20,7 @@ spec:
               fieldPath: metadata.name
         - name: RUNNER_WORKDIR
           value: /tmp/github-runner-your-repo
-        image: navyateja/githubrunner:v2
+        image: navyateja/githubrunner:v3
         imagePullPolicy: IfNotPresent
         name: runner
         volumeMounts:

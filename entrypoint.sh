@@ -26,7 +26,16 @@ if [[ -n "${ACCESS_TOKEN}" ]]; then
     | jq -r '.token')"
 fi
 
+function remove_runner() {
+    echo "Starting Clean up"
+    token=$(curl -s -XPOST -fsSL \
+    -H "${AUTH_HEADER}" \
+    -H "${API_HEADER}" \
+        "${URI}/repos/${_ACCOUNT}/${_REPO}/actions/runners/registration-token" | jq -r .token)
+    ./config.sh remove --token $token
+}
+
 ./config.sh --url "${REPO_URL}" --token "${RUNNER_TOKEN}" --name "${_RUNNER_NAME}" --work "${_RUNNER_WORKDIR}"
 ./run.sh --once
 
-./config.sh remove --token "${RUNNER_TOKEN}"
+remove_runner
